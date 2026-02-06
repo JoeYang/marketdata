@@ -1,0 +1,41 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "itch_protocol",
+    hdrs = ["itch_protocol.h"],
+)
+
+cc_library(
+    name = "market_data",
+    hdrs = ["market_data.h"],
+)
+
+cc_library(
+    name = "multicast",
+    srcs = ["multicast.cpp"],
+    hdrs = ["multicast.h"],
+)
+
+cc_library(
+    name = "order_book",
+    srcs = ["order_book.cpp"],
+    hdrs = ["order_book.h"],
+    deps = [
+        ":itch_protocol",
+        ":market_data",
+    ],
+)
+
+cc_library(
+    name = "feedhandler_lib",
+    srcs = ["feedhandler.cpp"],
+    hdrs = ["feedhandler.h"],
+    deps = [
+        ":itch_protocol",
+        ":market_data",
+        ":multicast",
+        ":order_book",
+    ],
+)

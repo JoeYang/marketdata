@@ -1,0 +1,21 @@
+# Bazel output symlinks
+/bazel-*
+
+# C++ build artifacts
+*.o
+*.a
+*.so
+*.dylib
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code local settings
+.claude/settings.local.json

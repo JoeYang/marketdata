@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbe:messageSchema xmlns:sbe="http://fixprotocol.io/2016/sbe"
+                   package="l2md"
+                   id="1"
+                   version="1"
+                   semanticVersion="1.0.0"
+                   description="L2 Market Data Schema"
+                   byteOrder="littleEndian">
+
+    <types>
+        <composite name="messageHeader" description="SBE Message Header">
+            <type name="blockLength" primitiveType="uint16"/>
+            <type name="templateId" primitiveType="uint16"/>
+            <type name="schemaId" primitiveType="uint16"/>
+            <type name="version" primitiveType="uint16"/>
+        </composite>
+
+        <composite name="groupSizeEncoding" description="Repeating Group Header">
+            <type name="blockLength" primitiveType="uint16"/>
+            <type name="numInGroup" primitiveType="uint8"/>
+        </composite>
+
+        <type name="Symbol" primitiveType="char" length="8" description="Instrument symbol"/>
+        <type name="Timestamp" primitiveType="uint64" description="Nanoseconds since Unix epoch"/>
+        <type name="SeqNum" primitiveType="uint64" description="Sequence number"/>
+        <type name="Price" primitiveType="int64" description="Price with 7 decimal places implied"/>
+        <type name="Qty" primitiveType="uint32" description="Quantity"/>
+        <type name="NumOrders" primitiveType="uint16" description="Number of orders at level"/>
+        <type name="Level" primitiveType="uint8" description="Price level (1-based)"/>
+        <type name="Side" primitiveType="uint8" description="0=Bid, 1=Ask"/>
+        <type name="Volume" primitiveType="uint64" description="Total traded volume"/>
+
+        <enum name="MessageType" encodingType="uint8">
+            <validValue name="Heartbeat">0</validValue>
+            <validValue name="L2Snapshot">1</validValue>
+        </enum>
+
+        <enum name="SideEnum" encodingType="uint8">
+            <validValue name="Bid">0</validValue>
+            <validValue name="Ask">1</validValue>
+        </enum>
+    </types>
+
+    <!-- Heartbeat Message (templateId=1) -->
+    <sbe:message name="Heartbeat" id="1" description="Heartbeat message">
+        <field name="timestamp" id="1" type="Timestamp"/>
+        <field name="sequenceNumber" id="2" type="SeqNum"/>
+    </sbe:message>
+
+    <!-- L2 Market Data Snapshot (templateId=2) -->
+    <sbe:message name="L2Snapshot" id="2" description="Level 2 Order Book Snapshot">
+        <field name="symbol" id="1" type="Symbol"/>
+        <field name="timestamp" id="2" type="Timestamp"/>
+        <field name="sequenceNumber" id="3" type="SeqNum"/>
+        <field name="lastTradePrice" id="4" type="Price"/>
+        <field name="lastTradeQty" id="5" type="Qty"/>
+        <field name="totalVolume" id="6" type="Volume"/>
+        <field name="bidCount" id="7" type="uint8"/>
+        <field name="askCount" id="8" type="uint8"/>
+        <group name="bids" id="9" dimensionType="groupSizeEncoding">
+            <field name="level" id="1" type="Level"/>
+            <field name="price" id="2" type="Price"/>
+            <field name="quantity" id="3" type="Qty"/>
+            <field name="numOrders" id="4" type="NumOrders"/>
+        </group>
+        <group name="asks" id="10" dimensionType="groupSizeEncoding">
+            <field name="level" id="1" type="Level"/>
+            <field name="price" id="2" type="Price"/>
+            <field name="quantity" id="3" type="Qty"/>
+            <field name="numOrders" id="4" type="NumOrders"/>
+        </group>
+    </sbe:message>
+
+</sbe:messageSchema>

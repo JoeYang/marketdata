@@ -1,0 +1,21 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "itch_simulator_lib",
+    srcs = ["itch_simulator.cpp"],
+    hdrs = ["itch_simulator.h"],
+    deps = [
+        "//src/feedhandler:itch_protocol",
+        "//src/feedhandler:multicast",
+    ],
+)
+
+cc_binary(
+    name = "itch_simulator",
+    srcs = ["main.cpp"],
+    deps = [
+        ":itch_simulator_lib",
+    ],
+)

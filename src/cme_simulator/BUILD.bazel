@@ -1,0 +1,21 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "cme_simulator_lib",
+    srcs = ["cme_simulator.cpp"],
+    hdrs = ["cme_simulator.h"],
+    deps = [
+        "//src/cme:cme_protocol",
+        "//src/feedhandler:multicast",
+    ],
+)
+
+cc_binary(
+    name = "cme_simulator",
+    srcs = ["main.cpp"],
+    deps = [
+        ":cme_simulator_lib",
+    ],
+)

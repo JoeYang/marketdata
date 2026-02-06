@@ -1,0 +1,51 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "cme_protocol",
+    hdrs = ["cme_protocol.h"],
+)
+
+cc_library(
+    name = "l2_sbe_messages",
+    hdrs = ["l2_sbe_messages.h"],
+)
+
+cc_library(
+    name = "cme_order_book",
+    srcs = ["cme_order_book.cpp"],
+    hdrs = ["cme_order_book.h"],
+    deps = [
+        ":cme_protocol",
+        "//src/feedhandler:market_data",
+    ],
+)
+
+cc_library(
+    name = "recovery_state",
+    srcs = ["recovery_state.cpp"],
+    hdrs = ["recovery_state.h"],
+)
+
+cc_library(
+    name = "cme_feedhandler_lib",
+    srcs = ["cme_feedhandler.cpp"],
+    hdrs = ["cme_feedhandler.h"],
+    deps = [
+        ":cme_order_book",
+        ":cme_protocol",
+        ":l2_sbe_messages",
+        ":recovery_state",
+        "//src/feedhandler:market_data",
+        "//src/feedhandler:multicast",
+    ],
+)
+
+cc_binary(
+    name = "cme_feedhandler",
+    srcs = ["main.cpp"],
+    deps = [
+        ":cme_feedhandler_lib",
+    ],
+)

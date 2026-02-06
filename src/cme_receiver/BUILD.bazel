@@ -1,0 +1,13 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_binary(
+    name = "cme_receiver",
+    srcs = ["cme_receiver.cpp"],
+    deps = [
+        "//src/cme:cme_protocol",
+        "//src/cme:l2_sbe_messages",
+        "//src/feedhandler:multicast",
+    ],
+)

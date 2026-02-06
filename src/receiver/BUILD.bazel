@@ -1,0 +1,12 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_binary(
+    name = "market_data_receiver",
+    srcs = ["market_data_receiver.cpp"],
+    deps = [
+        "//src/feedhandler:multicast",
+        "//src/feedhandler:market_data",
+    ],
+)
