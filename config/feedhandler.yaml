@@ -1,0 +1,31 @@
+# Market Data Feed Handler Configuration
+
+input:
+  multicast_group: "239.1.1.1"
+  port: 30001
+  interface: "0.0.0.0"  # or specific NIC IP
+  buffer_size: 65536
+
+output:
+  multicast_group: "239.1.1.2"
+  port: 30002
+  interface: "0.0.0.0"
+  ttl: 1
+
+processing:
+  # Mode: "tick" for tick-by-tick, "conflated" for time-based snapshots
+  mode: "tick"
+  
+  # Conflation settings (only used when mode=conflated)
+  conflation:
+    interval_ms: 100        # Snapshot interval in milliseconds
+    max_pending: 10000      # Max updates to buffer before forced flush
+    
+  # Order book settings
+  book:
+    depth: 10               # Levels to maintain
+    symbols: []             # Empty = all symbols, or list specific ones
+
+logging:
+  level: "info"             # debug, info, warn, error
+  stats_interval_sec: 10    # Print stats every N seconds

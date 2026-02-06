@@ -1,0 +1,19 @@
+# C++17 standard
+build --cxxopt=-std=c++17
+build --host_cxxopt=-std=c++17
+
+# Optimization
+build:opt --compilation_mode=opt
+build:opt --copt=-O3
+build:opt --copt=-march=native
+build:opt --copt=-DNDEBUG
+
+# Debug
+build:dbg --compilation_mode=dbg
+build:dbg --copt=-g
+build:dbg --copt=-O0
+
+# Warnings
+build --cxxopt=-Wall
+build --cxxopt=-Wextra
+build --cxxopt=-Werror=return-type
